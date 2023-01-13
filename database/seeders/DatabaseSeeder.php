@@ -14,11 +14,27 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        // \App\Models\User::factory(10)->create();
+        $group = \App\Models\Group::factory()->create();
+        $teacher = \App\Models\Teacher::factory()->create();
 
-        // \App\Models\User::factory()->create([
-        //     'name' => 'Test User',
-        //     'email' => 'test@example.com',
-        // ]);
+        $course = \App\Models\Course::factory()->create([
+            'courseTeacherId' => $teacher->ID,
+            'courseGroupId' => $group->groupId,
+        ]);
+
+        for($i=0; $i<=5; $i++){
+            \App\Models\Task::factory()->create([
+                'taskCourseId' => $course->courseId
+            ]);
+    
+            $student = \App\Models\Student::factory()->create([
+                'studentGroupId' => $group->groupId,
+            ]);
+    
+            \App\Models\Grade::factory()->create([
+                'gradeStudentId' => $student->ID,
+                'gradeCourseId' => $course->courseId
+            ]);
+        }
     }
 }
