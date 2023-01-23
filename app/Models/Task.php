@@ -9,11 +9,10 @@ namespace App\Models;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-
 /**
  * Class Task
  * 
- * @property int $tskId
+ * @property int $taskId
  * @property string $taskDescription
  * @property int $taskCourseId
  * @property Carbon $taskTimestamp
@@ -27,11 +26,9 @@ class Task extends Model
 	use HasFactory;
 	protected $table = 'tasks';
 	protected $primaryKey = 'taskId';
-	public $incrementing = false;
 	public $timestamps = false;
 
 	protected $casts = [
-		'taskId' => 'int',
 		'taskCourseId' => 'int'
 	];
 
@@ -40,7 +37,6 @@ class Task extends Model
 	];
 
 	protected $fillable = [
-		'tskId',
 		'taskDescription',
 		'taskCourseId',
 		'taskTimestamp'

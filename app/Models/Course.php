@@ -21,7 +21,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  * @property Teacher $teacher
  * @property Group $group
  * @property Collection|Grade[] $grades
- * @property Task $task
+ * @property Collection|Task[] $tasks
  *
  * @package App\Models
  */
@@ -58,8 +58,8 @@ class Course extends Model
 		return $this->hasMany(Grade::class, 'gradeCourseId');
 	}
 
-	public function task()
+	public function tasks()
 	{
-		return $this->hasOne(Task::class, 'taskCourseId');
+		return $this->hasMany(Task::class, 'taskCourseId');
 	}
 }

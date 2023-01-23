@@ -21,6 +21,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  * 
  * @property Group $group
  * @property Collection|Grade[] $grades
+ * @property Collection|User[] $users
  *
  * @package App\Models
  */
@@ -50,5 +51,10 @@ class Student extends Model
 	public function grades()
 	{
 		return $this->hasMany(Grade::class, 'gradeStudentId');
+	}
+
+	public function users()
+	{
+		return $this->hasMany(User::class, 'StudentId');
 	}
 }

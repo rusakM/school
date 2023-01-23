@@ -19,6 +19,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  * @property string $Password
  * 
  * @property Collection|Course[] $courses
+ * @property Collection|User[] $users
  *
  * @package App\Models
  */
@@ -38,5 +39,10 @@ class Teacher extends Model
 	public function courses()
 	{
 		return $this->hasMany(Course::class, 'courseTeacherId');
+	}
+
+	public function users()
+	{
+		return $this->hasMany(User::class, 'TeacherId');
 	}
 }

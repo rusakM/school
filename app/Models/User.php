@@ -1,44 +1,68 @@
 <?php
 
+/**
+ * Created by Reliese Model.
+ */
+
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
-use Laravel\Sanctum\HasApiTokens;
 
-class User extends Authenticatable
+/**
+ * Class User
+ * 
+ * @property int $ID
+ * @property string $Name
+ * @property string $Surname
+ * @property string $Password
+ * @property string $Role
+ * @property int|null $StudentId
+ * @property int|null $TeacherId
+ * @property string $rememberToken
+ * @property Carbon $Email_verified_at
+ * 
+ * @property Student|null $student
+ * @property Teacher|null $teacher
+ *
+ * @package App\Models
+ */
+class User extends Model
 {
-    use HasApiTokens, HasFactory, Notifiable;
+	use HasFactory;
+	protected $table = 'user';
+	protected $primaryKey = 'ID';
+	public $timestamps = false;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<int, string>
-     */
-    protected $fillable = [
-        'name',
-        'email',
-        'password',
-    ];
+	protected $casts = [
+		'StudentId' => 'int',
+		'TeacherId' => 'int'
+	];
 
-    /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var array<int, string>
-     */
-    protected $hidden = [
-        'password',
-        'remember_token',
-    ];
+	protected $dates = [
+		'Email_verified_at'
+	];
 
-    /**
-     * The attributes that should be cast.
-     *
-     * @var array<string, string>
-     */
-    protected $casts = [
-        'email_verified_at' => 'datetime',
-    ];
+	protected $fillable = [
+		'Name',
+		'Surname',
+		'Password',
+		'Role',
+		'StudentId',
+		'TeacherId',
+		'rememberToken',
+		'Email_verified_at'
+	];
+
+	public function student()
+	{
+		return $this->belongsTo(Student::class, 'StudentId');
+	}
+
+	public function teacher()
+	{
+		return $this->belongsTo(Teacher::class, 'TeacherId');
+	}
 }
