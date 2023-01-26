@@ -24,8 +24,7 @@ class AuthController extends Controller
             return redirect()->intended()
                         ->withSuccess('Signed in');
         }
-        echo 'df';
-        //return redirect("login")->withSuccess('Login details are not valid');
+        return redirect("login")->withSuccess('Login details are not valid');
     }
 
     public function registration()

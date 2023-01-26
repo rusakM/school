@@ -37,23 +37,24 @@ class User extends Model
 	public $timestamps = false;
 
 	protected $casts = [
-		'StudentId' => 'int',
-		'TeacherId' => 'int'
+		'studentId' => 'int',
+		'teacherId' => 'int'
 	];
 
 	protected $dates = [
-		'Email_verified_at'
+		'email_verified_at'
 	];
 
 	protected $fillable = [
-		'Name',
-		'Surname',
-		'Password',
-		'Role',
-		'StudentId',
-		'TeacherId',
+		'name',
+		'surname',
+		'email',
+		'password',
+		'role',
+		'studentId',
+		'teacherId',
 		'rememberToken',
-		'Email_verified_at'
+		'email_verified_at'
 	];
 
 	public function student()
