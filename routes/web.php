@@ -1,6 +1,10 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Requests\LoginRequest;
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\LogoutController;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,6 +17,15 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+    Route::get('/', [HomeController::class, 'index'])->name('home.index');
+    Route::get('login', [AuthController::class, 'index'])->name('login');
+    Route::post('login', [AuthController::class, 'login'])->name('login.perform');
+    
+
+    Route::group(['middleware' => ['auth']], function() {
+        /**
+         * Logout Routes
+         */
+        Route::get('/logout', [LogoutController::class, 'perform'])->name('logout.perform');
+    });
+
