@@ -18,38 +18,33 @@ class DatabaseSeeder extends Seeder
         $teacher = \App\Models\Teacher::factory()->create();
         
         \App\Models\User::factory()->create([
-            'TeacherId' => $teacher->ID,
-            'Role' => "teacher",
-            'Name' => $teacher->Name,
-            'Surname' =>$teacher->Surname,
-            'Password' => $teacher->Password
+            'teacherId' => $teacher->id,
+            'role' => "teacher",
         ]);
 
         $course = \App\Models\Course::factory()->create([
-            'courseTeacherId' => $teacher->ID,
-            'courseGroupId' => $group->groupId,
+            'courseTeacherId' => $teacher->id,
+            'courseGroupId' => $group->id,
         ]);
 
         for($i=0; $i<=5; $i++){
             \App\Models\Task::factory()->create([
-                'taskCourseId' => $course->courseId
+                'taskCourseId' => $course->id
             ]);
     
             $student = \App\Models\Student::factory()->create([
-                'studentGroupId' => $group->groupId,
+                'studentGroupId' => $group->id,
             ]);
     
             \App\Models\Grade::factory()->create([
-                'gradeStudentId' => $student->ID,
-                'gradeCourseId' => $course->courseId
+                'gradeStudentId' => $student->id,
+                'gradeCourseId' => $course->id,
+                'gradeTeacherId' => $teacher->id,
             ]);
 
             \App\Models\User::factory()->create([
-                'StudentId' => $student->ID,
-                'Role' => "student",
-                'Name' => $student->Name,
-                'Surname' =>$student->Surname,
-                'Password' => $student->Password
+                'studentId' => $student->id,
+                'role' => "student",
             ]);
         }
     }

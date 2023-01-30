@@ -25,21 +25,16 @@ class Task extends Model
 {
 	use HasFactory;
 	protected $table = 'tasks';
-	protected $primaryKey = 'taskId';
+	protected $primaryKey = 'id';
 	public $timestamps = false;
 
 	protected $casts = [
 		'taskCourseId' => 'int'
 	];
 
-	protected $dates = [
-		'taskTimestamp'
-	];
-
 	protected $fillable = [
 		'taskDescription',
 		'taskCourseId',
-		'taskTimestamp'
 	];
 
 	public function course()

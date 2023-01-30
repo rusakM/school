@@ -26,8 +26,8 @@ return new class extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->timestamps();
 
-            $table->foreign('studentId')->references('ID')->on('students');
-            $table->foreign('teacherId')->references('ID')->on('teachers');
+            $table->foreign('studentId')->references('id')->on('students');
+            $table->foreign('teacherId')->references('id')->on('teachers');
         });
     }
 

@@ -29,7 +29,7 @@ class Student extends Model
 {
 	use HasFactory;
 	protected $table = 'students';
-	protected $primaryKey = 'ID';
+	protected $primaryKey = 'id';
 	public $timestamps = false;
 
 	protected $casts = [
@@ -37,9 +37,6 @@ class Student extends Model
 	];
 
 	protected $fillable = [
-		'Name',
-		'Surname',
-		'Password',
 		'studentGroupId'
 	];
 
@@ -55,6 +52,6 @@ class Student extends Model
 
 	public function users()
 	{
-		return $this->hasMany(User::class, 'StudentId');
+		return $this->hasOne(User::class, 'StudentId');
 	}
 }

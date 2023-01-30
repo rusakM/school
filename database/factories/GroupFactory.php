@@ -20,7 +20,7 @@ class GroupFactory extends Factory
     public function definition()
     {
         return [
-            'groupName' => fake()->country() . '_grupa'
+            'groupName' => fake()->country() . 'Technikum Informatyczne, klasa 1'
         ];
     }
 }

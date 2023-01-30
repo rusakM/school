@@ -25,7 +25,7 @@ class Group extends Model
 {
 	use HasFactory;
 	protected $table = 'groups';
-	protected $primaryKey = 'groupId';
+	protected $primaryKey = 'id';
 	public $timestamps = false;
 
 	protected $fillable = [

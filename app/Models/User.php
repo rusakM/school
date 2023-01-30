@@ -32,7 +32,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class User extends Model
 {
 	use HasFactory;
-	protected $table = 'user';
+	protected $table = 'users';
 	protected $primaryKey = 'ID';
 	public $timestamps = false;
 
@@ -53,17 +53,17 @@ class User extends Model
 		'role',
 		'studentId',
 		'teacherId',
-		'rememberToken',
+		'remember_token',
 		'email_verified_at'
 	];
 
 	public function student()
 	{
-		return $this->belongsTo(Student::class, 'StudentId');
+		return $this->belongsTo(Student::class, 'studentId');
 	}
 
 	public function teacher()
 	{
-		return $this->belongsTo(Teacher::class, 'TeacherId');
+		return $this->belongsTo(Teacher::class, 'teacherId');
 	}
 }

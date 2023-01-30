@@ -21,9 +21,6 @@ class StudentFactory extends Factory
     public function definition()
     {
         return [
-            'Name' => fake()->firstname(),
-            'Surname' => fake()->lastname(),
-            'Password' => 'szkola1',
         ];
     }
 }

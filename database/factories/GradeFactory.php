@@ -21,7 +21,6 @@ class GradeFactory extends Factory
     {
         return [
             'grade' => fake()->numberBetween(1, 6),
-            'gradeTimestamp' => now(),
             'gradeComment' => fake()->text(20,50)
         ];
     }

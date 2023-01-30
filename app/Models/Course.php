@@ -29,7 +29,7 @@ class Course extends Model
 {
 	use HasFactory;
 	protected $table = 'courses';
-	protected $primaryKey = 'courseId';
+	protected $primaryKey = 'id';
 	public $timestamps = false;
 
 	protected $casts = [

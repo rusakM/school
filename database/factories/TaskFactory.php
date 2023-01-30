@@ -21,7 +21,6 @@ class TaskFactory extends Factory
     {
         return [
             'taskDescription' => fake()->text(20,50),
-            'taskTimestamp' => now(),
         ];
     }
 }

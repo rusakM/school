@@ -29,7 +29,7 @@ class Grade extends Model
 {
 	use HasFactory;
 	protected $table = 'grades';
-	protected $primaryKey = 'gradeId';
+	protected $primaryKey = 'id';
 	public $timestamps = false;
 
 	protected $casts = [
@@ -38,16 +38,11 @@ class Grade extends Model
 		'gradeCourseId' => 'int'
 	];
 
-	protected $dates = [
-		'gradeTimestamp'
-	];
-
 	protected $fillable = [
 		'grade',
 		'gradeStudentId',
 		'gradeComment',
 		'gradeCourseId',
-		'gradeTimestamp'
 	];
 
 	public function course()
@@ -58,5 +53,9 @@ class Grade extends Model
 	public function student()
 	{
 		return $this->belongsTo(Student::class, 'gradeStudentId');
+	}
+
+	public function teacher() {
+		return $this->belongsTo(Teacher::class, 'gradeTeacherId');
 	}
 }

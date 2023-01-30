@@ -20,9 +20,6 @@ class TeacherFactory extends Factory
     public function definition()
     {
         return [
-            'Name' => fake()->firstname(),
-            'Surname' => fake()->lastname(),
-            'Password' => fake()->password(),
         ];
     }
 }
