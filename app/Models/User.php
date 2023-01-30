@@ -10,6 +10,14 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Auth\Passwords\CanResetPassword;
+use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
+use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
+use Illuminate\Contracts\Auth\Authenticatable;
+use Illuminate\Auth\Authenticatable as AuthenticableTrait;
+use Illuminate\Foundation\Validation\ValidatesRequests;
+use Illuminate\Notifications\Notifiable;
+use App\Notifications\ResetPasswordNotification;
 
 /**
  * Class User
@@ -29,9 +37,13 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  *
  * @package App\Models
  */
-class User extends Model
+class User extends Model implements AuthenticatableContract,CanResetPasswordContract
 {
 	use HasFactory;
+	use AuthenticableTrait,CanResetPassword;
+    use ValidatesRequests;
+	use Notifiable;
+
 	protected $table = 'users';
 	protected $primaryKey = 'ID';
 	public $timestamps = false;
@@ -66,4 +78,9 @@ class User extends Model
 	{
 		return $this->belongsTo(Teacher::class, 'teacherId');
 	}
+
+	public function sendPasswordResetNotification($token)
+    {
+        $this->notify(new ResetPasswordNotification($token));
+    }
 }
