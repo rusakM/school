@@ -4,8 +4,10 @@
 <section class="main-page">
     <div class="hello">
         @auth
-            <h2>Witaj {{name}}!</h2>
-            <h3>Jesteś zalogowany jako:</h3>
+            <h2>Witaj {{auth()->user()->name}} {{auth()->user()->surname}}!</h2>
+            <h3>Jesteś zalogowany jako:&nbsp;
+                {{auth()->user()->role === 'teacher' ? "Nauczyciel" : "Uczeń"}}
+            </h3>
         @endauth
 
         @guest

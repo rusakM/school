@@ -45,7 +45,7 @@ class User extends Model implements AuthenticatableContract,CanResetPasswordCont
 	use Notifiable;
 
 	protected $table = 'users';
-	protected $primaryKey = 'ID';
+	protected $primaryKey = 'id';
 	public $timestamps = false;
 
 	protected $casts = [
