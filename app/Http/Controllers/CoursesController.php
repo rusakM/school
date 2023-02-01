@@ -3,7 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Course;
+use App\Models\Groups;
+use App\Models\Student;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 class CoursesController extends Controller
 {
@@ -14,7 +18,45 @@ class CoursesController extends Controller
      */
     public function index()
     {
-        $courses = $course::all();
+        $role = Auth::user()->role;
+        $courses = [];
+
+        if (isset($role)) {            
+            if ($role === 'teacher') {
+                $teacherId = Auth::user()->teacherId;
+                if (isset($teacherId) && $teacherId > 0) {   
+                    $courses = Course::select('courses.id', 'courses.courseName', 'courses.courseGroupId', 'groups.groupName')
+                        ->leftJoin('groups', function($leftJoin) {
+                            $leftJoin->on('courses.courseGroupId', '=', 'groups.id');
+                        })
+                        ->where('courses.courseTeacherId', '=', $teacherId)->get();
+                }
+            }            
+            
+            if ($role === 'student') {
+                $studentId = Auth::user()->studentId;
+
+                if (isset($studentId) && $studentId > 0) {             
+                    $groupId = Student::find($studentId)->studentGroupId;
+                    
+                    if (isset($groupId)) {
+                        Log::channel('stderr')->info($groupId);
+                        $courses = Course::select('courses.id', 'courses.courseName', 'courses.courseTeacherId', 'users.name', 'users.surname')
+                        ->leftJoin('users', function($leftJoin) {
+                            $leftJoin->on('users.teacherId', '=', 'courses.courseTeacherId');
+                        })
+                        ->where('courses.courseGroupId', '=', $groupId)->get();
+                    } else {
+                    }
+                }
+                
+            }
+        
+
+        }
+
+        
+
         return view ('courses.index')->with('courses', $courses);
     }
 
