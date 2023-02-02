@@ -3,7 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Models\Grade;
+use App\Models\Course;
+use App\Models\Teacher;
+use App\Models\Student;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\DB;
 
 class GradesController extends Controller
 {
@@ -14,10 +20,21 @@ class GradesController extends Controller
      */
     public function index()
     {
-        $grades = $grade::all();
-        return view ('grades.index')->with('grades', $grades);
-    }
+        $role = Auth::user()->role;
+        $grades = [];
 
+        if (isset($role)) {
+            if ($role === 'student') {
+                $studentId = Auth::user()->studentId;
+                if (isset($studentId) && $studentId > 0) {
+                    $grades = DB::table('gradesByStudentsAndCourses')->where('studentId', '=', $studentId)->get();
+                }
+            }
+
+            return view ('grades.index')->with('grades', $grades);
+        }
+
+    }
     /**
      * Show the form for creating a new resource.
      *

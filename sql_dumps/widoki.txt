@@ -1,0 +1,92 @@
+==============================
+pierwszy widok
+
+==============================
+
+
+create view `studentsByCourses` as SELECT
+`students`.`id` as `studentId`, CONCAT_WS(' ', `users`.`name`, `users`.`surname`) as `studentName`, `courses`.`id` as `courseId`,
+`courses`.`courseName` as `courseName`, `students`.`studentGroupId` as `studentGroupId`, `groups`.`groupName` as `groupName`
+from (((`users` join `students`) join `courses`) join `groups`) 
+where `students`.`studentGroupId` = `courses`.`courseGroupId`
+      AND `groups`.`id` = `courses`.`courseGroupId`
+       and `students`.`id` = `users`.`studentId`
+       and `users`.`role` = 'student'
+       GROUP BY `courses`.`id`, `students`.`id`;
+       
+       
+       
+       
+===============================
+drugi
+===============================
+
+create view `gradesByStudentsAndCourses` as SELECT
+	`students`.`id` as `studentId`, concat_ws(' ', `users`.`name`, `users`.`surname`) as `studentName`,
+    GROUP_CONCAT(`grades`.`grade` SEPARATOR ', ') as `grades`, AVG(`grades`.`grade`) as `gradesAvg`,
+    SUM(`grades`.`grade`) as `gradesSum`, `courses`.`id` as `courseId`, `courses`.`courseName` as `courseName`
+FROM
+	((((`users` join `students`) join `courses`) join `grades`) join `groups`)
+WHERE
+	`students`.`studentGroupId` = `groups`.`id`
+    and `courses`.`courseGroupId` = `groups`.`id`
+    and `grades`.`gradeCourseId` = `courses`.`id`
+    AND `students`.`id` = `grades`.`gradeStudentId`
+    and `students`.`id` = `users`.`studentId`
+    and `users`.`role` = 'student'
+GROUP BY `students`.`id`, `courses`.`id`;
+
+
+
+
+================================
+trzeci
+================================
+
+create view `studentsWithGradesByCourses` as SELECT
+	`studentsByCourses`.`studentId` as `studentId`, `studentsByCourses`.`studentName` as `studentName`,
+	`studentsByCourses`.`courseId` as `courseId`, `studentsByCourses`.`studentGroupId` as `studentGroupId`,
+	`studentsByCourses`.`groupName` as `groupName`, `gradesByStudentsAndCourses`.`grades` as `grades`,
+	`gradesByStudentsAndCourses`.`gradesAvg` as `gradesAvg`, `gradesByStudentsAndCourses`.`gradesSum` as `gradesSum`,
+	`gradesByStudentsAndCourses`.`gradesCount` as `gradesCount`
+FROM
+	(`studentsByCourses` left join `gradesByStudentsAndCourses`
+     on(`studentsByCourses`.`studentId` = `gradesByStudentsAndCourses`.`studentId`
+        and `studentsByCourses`.`courseId` = `gradesByStudentsAndCourses`.`courseId`))
+ORDER BY `studentId`;
+
+
+
+================================
+czwarty
+================================
+
+create view `gradesWithTeachersNames` as select 
+	`grades`.`id` as `gradeId`, `grades`.`grade` as `grade`, `grades`.`gradeStudentId` as `gradeStudentId`,
+	`grades`.`gradeCourseId` as `gradeCourseId`, `grades`.`gradeTeacherId` as `gradeTeacherId`, 
+	`grades`.`gradeComment` as `gradeComment`, concat_ws(' ', `users`.`name`, `users`.`surname`) as `teacherName`
+from
+	`grades`, `teachers`, `users` 
+WHERE
+	`grades`.`gradeTeacherId` = `teachers`.`id`
+    and `teachers`.`id` = `users`.`teacherId`
+ORDER BY `grades`.`id`;
+
+
+==============================
+piąty
+===============================
+
+create view `studentsGrades` as SELECT 
+	A.studentId as studentId, A.studentName AS studentName, B.grade, B.gradeComment, B.teacherName AS teacherName, B.gradeCourseId, 	courses.courseName, A.gradesAvg, A.gradesSum
+FROM students, courses, studentsWithGradesByCourses A, groups, gradesWithTeachersNames B, users
+WHERE
+    students.id = B.gradeStudentId
+    AND users.studentId = students.id
+    AND students.studentGroupId = groups.id
+    AND courses.courseGroupId = groups.id
+    AND A.studentId = students.id
+    AND B.gradeCourseId = courses.id
+    AND A.courseId = courses.id
+    AND A.studentGroupId = groups.id
+ORDER BY studentId;

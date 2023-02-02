@@ -5,9 +5,11 @@ namespace App\Http\Controllers;
 use App\Models\Course;
 use App\Models\Groups;
 use App\Models\Student;
+use App\Models\Task;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\DB;
 
 class CoursesController extends Controller
 {
@@ -109,10 +111,32 @@ class CoursesController extends Controller
      * @param  \App\Models\Course  $course
      * @return \Illuminate\Http\Response
      */
-    public function show(Course $course)
+    public function showCourse(Course $course)
     {
-        $course = course::find($id);
-        return view::make('courses.show')->with('course', $course);
+        $role = Auth::user()->role;
+        $courseName = '';
+        $grades = [];
+        $tasks = [];
+        if (isset($role)) {
+
+            $courseName = $course->courseName;
+            $tasks = Task::where('taskCourseId', '=', $course->id)->get();
+            if ($role === 'student') {
+                $studentId = Auth::user()->studentId;
+
+                if(isset($studentId) && $studentId > 0) {
+                    $grades = DB::table('studentsGrades')->where('studentId', '=', $studentId)->where('gradeCourseId', '=', $course->id)->get();
+                }
+            } else {
+                $teacherId = Auth::user()->teacherId;
+
+                if(isset($teacherId) && $teacherId > 0) {
+                    $grades = DB::table('studentsGrades')->where('gradeCourseId', '=', $course->id)->get();
+                }
+            }
+        }
+
+        return view ('courses.course', ['grades' => $grades, 'courseName' => $courseName, 'tasks' => $tasks]);
     }
 
     /**
