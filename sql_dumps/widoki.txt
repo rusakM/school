@@ -90,3 +90,17 @@ WHERE
     AND A.courseId = courses.id
     AND A.studentGroupId = groups.id
 ORDER BY studentId;
+
+
+=================================
+szósty
+=================================
+
+create view `studentsWithGroups` as SELECT 
+	`students`.`id` as `studentId`, concat_ws(' ', `users`.`name`, `users`.`surname`) as `studentName`, 
+    `students`.`studentGroupId` as `groupId`, `groups`.`groupName` as `groupName`
+FROM `students`, `users`, `groups` 
+WHERE
+	`users`.`studentId` = `students`.`id`
+    and `students`.`studentGroupId` = `groups`.`id`
+    and `users`.`role` = 'student';

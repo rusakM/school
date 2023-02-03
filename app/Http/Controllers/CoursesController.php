@@ -3,9 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Course;
-use App\Models\Groups;
+use App\Models\Group;
 use App\Models\Student;
 use App\Models\Task;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
@@ -117,6 +118,11 @@ class CoursesController extends Controller
         $courseName = '';
         $grades = [];
         $tasks = [];
+        $students = [];
+
+        $group = Group::find($course->courseGroupId);
+        $teacher = User::where('teacherId', '=', $course->courseTeacherId)->limit(1)->get();
+
         if (isset($role)) {
 
             $courseName = $course->courseName;
@@ -132,11 +138,13 @@ class CoursesController extends Controller
 
                 if(isset($teacherId) && $teacherId > 0) {
                     $grades = DB::table('studentsGrades')->where('gradeCourseId', '=', $course->id)->get();
+                    $students = DB::table('studentsWithGroups')->where('groupId', '=', $group->id)->get();
+                    
                 }
             }
         }
 
-        return view ('courses.course', ['grades' => $grades, 'courseName' => $courseName, 'tasks' => $tasks]);
+        return view ('courses.course', ['grades' => $grades, 'courseName' => $courseName, 'tasks' => $tasks, 'group' => $group, 'teacher' => $teacher, 'courseId' => $course->id, 'students' => $students]);
     }
 
     /**

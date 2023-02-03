@@ -5,6 +5,8 @@ use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CoursesController;
 use App\Http\Controllers\GradesController;
+use App\Http\Controllers\GroupsController;
+use App\Http\Controllers\TasksController;
 
 /*
 |--------------------------------------------------------------------------
@@ -25,11 +27,14 @@ Route::get('/dashboard', function () {
 
 Route::middleware('auth')->group(function () {
     Route::get('/courses/{course}', [CoursesController::class, 'showCourse'])->name('courses.show');
+    Route::get('/groups/{group}', [GroupsController::class, 'show'])->name('groups.show');
     Route::get('/courses-list', [CoursesController::class, 'index'])->name('courses.list');
     Route::get('/grades-list', [GradesController::class, 'index'])->name('grades.list');
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    Route::resource('tasks', TasksController::class);
+    Route::resource('grades', GradesController::class);
 });
 
 require __DIR__.'/auth.php';

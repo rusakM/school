@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Group;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class GroupsController extends Controller
 {
@@ -65,8 +66,10 @@ class GroupsController extends Controller
      */
     public function show(Group $group)
     {
-        $group = group::find($id);
-        return view::make('groups.show')->with('group', $group);
+        $students = [];
+
+        $students = DB::table('studentsWithGroups')->where('groupId', '=', $group->id)->get();
+        return view('groups.group', ['groupName' => $group->groupName, 'students' => $students]);
     }
 
     /**

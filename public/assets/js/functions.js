@@ -19,24 +19,10 @@ const toggleMenu = () => {
     }
 };
 
-const newGrade = (studentId, courseId) => {
-    const aside = document.createElement("aside");
-    aside.classList.add("alert");
-    aside.id = "new-grade";
-
-    aside.innerHTML = `
-    <span onclick="closeGradeAlert()" class="close-btn">&#9747;</span>
-    <form method="POST" action="addgrade.php?student=${studentId}&course=${courseId}">
-      <label for="grade">Ocena</label>
-      <input type="number" max="6" min="1" name="grade" id="grade">
-      <label for="comment">Komentarz</label>
-      <input type="text" id="comment" name="comment">
-      <input type="submit" value="Wyślij" class="btn">
-    </form>`;
-
-    document.querySelectorAll(".container")[0].appendChild(aside);
+const addGrade = () => {
+    document.getElementById("grade-alert").style.display = "block";
 };
 
-const closeGradeAlert = () => {
-    document.getElementById("new-grade").remove();
+const closeGradeForm = (event) => {
+    document.getElementById("grade-alert").style.display = "none";
 };

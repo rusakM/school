@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Task;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class TasksController extends Controller
 {
@@ -36,29 +37,16 @@ class TasksController extends Controller
      */
     public function store(Request $request)
     {
-        $rules = array(
-            'taskDescription'=>'required',
-            'taskCourseId'=>'required|numeric',
-            'taskTimestamp'=>'required|date'
-        );
-        $validator = Validator::make(Input::all(), $rules);
+        Log::channel('stderr')->info('here');
+        $data = $request->all();
+        Log::channel('stderr')->info($data);
+        $task = new Task();
+        $task->fill($data);
+        $task->save();
 
-        // process the login
-        if ($validator->fails()) {
-            return Redirect::to('tasks/create')
-                ->withErrors($validator)
-                ->withInput(Input::except('password'));
-        } else {
-            // store
-            $task = new task;
-            $task->taskDescription = Input::get('taskDescription');
-            $task->taskCourseId = Input::get('taskCourseId');
-            $task->taskTimestamp = Input::get('taskTimestamp');
-            $task->save();
-
-            // redirect
-            return Redirect::to('tasks');
-        }
+        $redirection = "courses/".$request->taskCourseId;
+        // redirect
+        return redirect($redirection);
     }
 
     /**

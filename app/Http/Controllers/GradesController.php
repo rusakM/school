@@ -53,34 +53,16 @@ class GradesController extends Controller
      */
     public function store(Request $request)
     {
-        $rules = array(
-            'grade'=>'required',
-            'gradeStudentId'=>'required|numeric',
-            'gradeComment',
-            'gradeCourseId'=>'required|numeric',
-            'gradeTimestamp'=>'required|date'
-
-        );
-        $validator = Validator::make(Input::all(), $rules);
-
-        // process the login
-        if ($validator->fails()) {
-            return Redirect::to('grades/create')
-                ->withErrors($validator)
-                ->withInput(Input::except('password'));
-        } else {
             // store
-            $grade = new grade;
-            $grade->grade = Input::get('grade');
-            $grade->gradeStudentId = Input::get('gradeStudentId');
-            $grade->gradeComment = Input::get('gradeComment');
-            $grade->gradeCourseId = Input::get('gradeCourseId');
-            $grade->gradeTimestamp = Input::get('gradeTimestamp');
+            $data = $request->all();
+            $grade = new Grade();
+            $grade->fill($data);
             $grade->save();
 
+
+            $redirection = "courses/".$data['gradeCourseId'];
             // redirect
-            return Redirect::to('grades');
-        }
+            return redirect($redirection);
     }
 
     /**

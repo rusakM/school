@@ -24,8 +24,6 @@
             </table>
         @endif
         
-        <!-- wynik polecenia do usuniecia -> here -->
-        {{json_encode($courses)}}
 </div>
 </section>
 @endsection

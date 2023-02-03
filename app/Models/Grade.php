@@ -35,7 +35,8 @@ class Grade extends Model
 	protected $casts = [
 		'grade' => 'int',
 		'gradeStudentId' => 'int',
-		'gradeCourseId' => 'int'
+		'gradeCourseId' => 'int',
+		'gradeTeacherId' => 'int'
 	];
 
 	protected $fillable = [
@@ -43,6 +44,7 @@ class Grade extends Model
 		'gradeStudentId',
 		'gradeComment',
 		'gradeCourseId',
+		'gradeTeacherId'
 	];
 
 	public function course()

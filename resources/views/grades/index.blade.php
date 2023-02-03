@@ -27,8 +27,6 @@
             @else
 
             @endif
-
-            {{json_encode($grades)}}
         @endif
     </div>
 </section>
